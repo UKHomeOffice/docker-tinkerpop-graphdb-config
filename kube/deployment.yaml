@@ -12,7 +12,7 @@ spec:
     spec:
       containers:
         - name: tinkerpop-graphdb
-          image: http://quay.io/ukhomeofficedigital/docker-tinkerpop-graphdb
+          image: quay.io/ukhomeofficedigital/docker-tinkerpop-graphdb
           securityContext:
             runAsNonRoot: true
           volumeMounts:
