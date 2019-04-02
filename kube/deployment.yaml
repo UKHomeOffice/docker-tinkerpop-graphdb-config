@@ -2,28 +2,42 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ .NAME }}
+  name: tinkerpop-graphdb
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        name: {{ .NAME }}
-        service: hello-world
+        name: tinkerpop-graphdb
     spec:
-      imagePullSecrets:
-        - name: docker-registry-key
       containers:
-        - name: hello-world
-          image: {{ .IMAGE_URL }}
-          imagePullPolicy: IfNotPresent
+        - name: tinkerpop-graphdb
+          image: http://quay.io/ukhomeofficedigital/docker-tinkerpop-graphdb
           securityContext:
             runAsNonRoot: true
-          ports:
-            - containerPort: 4000
-          env:
-            - name: MYSUPERSECRET
+          volumeMounts:
+            - mountPath: /opt/graphdb/conf
+              name: config
+              readOnly: true
+          env: 
+            - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
-                  name: {{ .NAME }}-secret
-                  key: mysupersecret
+                  name: tinkerpop-graphdb
+                  key: AWS_ACCESS_KEY_ID
+
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: tinkerpop-graphdb
+                  key: AWS_SECRET_ACCESS_KEY
+
+
+            - name: AWS_DEFAULT_REGION
+              value: eu-west-2
+
+      restartPolicy: Always
+      volumes:
+        - name: config
+          configMap:
+            name: tinkerpop-graphdb

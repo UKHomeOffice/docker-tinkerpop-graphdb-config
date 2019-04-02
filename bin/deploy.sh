@@ -15,6 +15,11 @@ case ${DRONE_DEPLOY_TO} in
     export KUBE_SERVER="https://kube-api-notprod.notprod.acp.homeoffice.gov.uk"
     # NOTE: the KUBE_TOKEN_ACP_NOTPROD is stored as a drone secret
     export KUBE_TOKEN=${KUBE_TOKEN_ACP_NOTPROD}
+    case ${KUBE_NAMESPACE} in
+        'cdp-dev')
+	    export VERSION="v0.0.20"
+        ;;
+    esac
     ;;
 esac
 

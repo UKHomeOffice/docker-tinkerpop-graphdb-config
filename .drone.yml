@@ -1,0 +1,38 @@
+pipeline:
+
+  deploy-to-kube:
+    image: quay.io/ukhomeofficedigital/kd:v1.10.6
+    secrets:
+      - kube_token_acp_notprod
+    environment:
+      - IMAGE_URL=http://quay.io/ukhomeofficedigital/docker-tinkerpop-graphdb
+    commands:
+      - apk update
+      - apk add curl
+      - bin/deploy.sh
+    when:
+      branch: master
+      event: push
+
+#  build_ecr:
+#    image: quay.io/ukhomeofficedigital/ecr:latest
+#    secrets:
+#      - AWS_ACCESS_KEY_ID
+#      - AWS_SECRET_ACCESS_KEY
+#    repo: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp-induction/leonardo
+#    tags:
+#    - ${DRONE_COMMIT_SHA}
+#    when:
+#      event: push
+
+#  build_tag_ecr:
+#    image: quay.io/ukhomeofficedigital/ecr:latest
+#    secrets:
+#      - ACCESS_ID
+#      - ACCESS_KEY
+#    repo: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp-induction/leonardo
+#    tags:
+#      - latest
+#      - ${DRONE_TAG}
+#    when:
+#      event: tag
