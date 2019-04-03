@@ -12,6 +12,7 @@ configMapGenerator:
     files:
       - conf/gremlin-server.yml
       - conf/janusgraph-dynamodb.properties
+      - conf/globals.groovy
 
 secretGenerator:
   - name: tinkerpop-graphdb
