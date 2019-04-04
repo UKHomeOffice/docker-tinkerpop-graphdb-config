@@ -31,11 +31,33 @@ spec:
                 secretKeyRef:
                   name: tinkerpop-graphdb
                   key: AWS_SECRET_ACCESS_KEY
-
-
             - name: AWS_DEFAULT_REGION
               value: eu-west-2
-
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 1
+              memory: 4Gi
+          readinessProbe:
+            httpGet:
+              path: /healthcheck/readiness
+              port: 8182
+              # httpHeaders:
+              #   - name: Foo
+              #     value: Bar
+            initialDelaySeconds: 5
+            periodSeconds: 30
+          livenessProbe:
+            httpGet:
+              path: /healthcheck/liveness
+              port: 8182
+              # httpHeaders:
+              #   - name: Foo
+              #     value: Bar
+            initialDelaySeconds: 5
+            periodSeconds: 30
       restartPolicy: Always
       volumes:
         - name: config
