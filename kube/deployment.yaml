@@ -33,6 +33,8 @@ spec:
                   key: AWS_SECRET_ACCESS_KEY
             - name: AWS_DEFAULT_REGION
               value: eu-west-2
+            - name: PVGDPR_OPTS
+              value: -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap
           resources:
             requests:
               cpu: 500m
