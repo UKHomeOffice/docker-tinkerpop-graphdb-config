@@ -1,17 +1,26 @@
 pipeline:
 
+  kustomize:
+    image: bitlayer/kustomize:v2.0.3
+    commands:
+      - cd kube && kustomize build > ../kustomize.out
+    when:
+      # event: tag
+      event: push
+
   deploy-to-kube:
     image: quay.io/ukhomeofficedigital/kd:v1.10.6
     secrets:
       - kube_token_acp_notprod
     environment:
-      - IMAGE_URL=http://quay.io/ukhomeofficedigital/docker-tinkerpop-graphdb
+      - DRONE_DEPLOY_TO=acp-notprod
+      - IMAGE_URL=http://quay.io/ukhomeofficedigital/docker-tinkerpop-graphdb:v0.1.0
     commands:
       - apk update
       - apk add curl
-      - bin/deploy.sh
+      - bin/deploy.sh kustomize.out
     when:
-      branch: master
+      # event: tag
       event: push
 
 #  build_ecr:

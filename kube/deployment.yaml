@@ -12,7 +12,8 @@ spec:
     spec:
       containers:
         - name: tinkerpop-graphdb
-          image: quay.io/ukhomeofficedigital/docker-tinkerpop-graphdb
+          image: quay.io/ukhomeofficedigital/docker-tinkerpop-graphdb:v0.1.0
+          imagePullPolicy: Always
           securityContext:
             runAsNonRoot: true
           volumeMounts:
@@ -31,11 +32,29 @@ spec:
                 secretKeyRef:
                   name: tinkerpop-graphdb
                   key: AWS_SECRET_ACCESS_KEY
-
-
             - name: AWS_DEFAULT_REGION
               value: eu-west-2
-
+            - name: PVGDPR_OPTS
+              value: -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 1
+              memory: 4Gi
+          readinessProbe:
+            httpGet:
+              path: /healthcheck/readiness
+              port: 3001
+            initialDelaySeconds: 5
+            periodSeconds: 30
+          livenessProbe:
+            httpGet:
+              path: /healthcheck/liveliness
+              port: 3001
+            initialDelaySeconds: 5
+            periodSeconds: 30
       restartPolicy: Always
       volumes:
         - name: config
