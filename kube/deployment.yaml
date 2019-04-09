@@ -12,7 +12,7 @@ spec:
     spec:
       containers:
         - name: tinkerpop-graphdb
-          image: quay.io/ukhomeofficedigital/docker-tinkerpop-graphdb:v0.1.0
+          image: quay.io/ukhomeofficedigital/docker-tinkerpop-graphdb:v0.1.1
           imagePullPolicy: Always
           securityContext:
             runAsNonRoot: true
@@ -35,7 +35,7 @@ spec:
             - name: AWS_DEFAULT_REGION
               value: eu-west-2
             - name: PVGDPR_OPTS
-              value: -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap
+              value: -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap  -Dcom.sun.management.jmxremote
           resources:
             requests:
               cpu: 500m
