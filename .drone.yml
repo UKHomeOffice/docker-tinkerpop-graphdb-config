@@ -14,7 +14,7 @@ pipeline:
       - kube_token_acp_notprod
     environment:
       - DRONE_DEPLOY_TO=acp-notprod
-      - IMAGE_URL=http://quay.io/ukhomeofficedigital/docker-tinkerpop-graphdb:v0.1.0
+      - IMAGE_URL=http://quay.io/ukhomeofficedigital/docker-tinkerpop-graphdb:v0.1.1
     commands:
       - apk update
       - apk add curl
