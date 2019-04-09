@@ -13,9 +13,13 @@ configMapGenerator:
       - conf/gremlin-server.yml
       - conf/janusgraph-dynamodb.properties
       - conf/globals.groovy
+      - conf/bootstrap.groovy
+      - conf/graph-schema.json
 
-secretGenerator:
-  - name: tinkerpop-graphdb
-    type: Opaque
-    env: awscreds.txt
+# secretGenerator used to push AWS creds to k8s on the command line
+# when running from Drone, assuming the secret has already been created
+# secretGenerator:
+#   - name: tinkerpop-graphdb
+#     type: Opaque
+#     env: awscreds.txt
 
